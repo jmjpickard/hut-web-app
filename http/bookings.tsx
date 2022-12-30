@@ -1,13 +1,16 @@
-export const getBookings = () => {
-  const accessToken = localStorage.getItem("token");
-
-  return fetch(`${process.env.REACT_APP_API_URL!}/readBookings`, {
-    headers: {
-      authorization: accessToken ? `bearer ${accessToken}` : "na",
-    },
-  }).then((res) => {
+export const test = () => {
+  return fetch("/api/hello").then((res) => {
     if (res.status === 401) {
-      localStorage.removeItem("token");
+      window.location.reload();
+    }
+
+    return res.json();
+  });
+};
+
+export const getBookings = async () => {
+  return await fetch("/api/crud/getBookings").then((res) => {
+    if (res.status === 401) {
       window.location.reload();
     }
 

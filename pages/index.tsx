@@ -1,71 +1,20 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { NavBar } from "../components/NavBar";
-import { useWindowSize } from "../hooks/window";
 import { getBookings } from "../http/bookings";
 import styles from "../components/styles.module.scss";
 import { NewCalendar } from "../components/NewCalendar/newCalendar";
 import { UpcomingEvents } from "../components/UpcomingEvents/UpcomingEvents";
-import { Login } from "../components/Login";
-
-export interface ViewProps {
-  view: "home" | "calendar";
-  width: number;
-}
-
-export interface CalendarEvent {
-  allDay?: boolean;
-  title?: React.ReactNode;
-  start?: Date;
-  end?: Date;
-  resource?: any;
-  owner: "Jack" | "Charlie" | "Lily" | "M & D" | "Other";
-  description: string;
-  approved: boolean;
-}
-
-export interface ApiCalendarEvent {
-  start_date: Date;
-  end_date: Date;
-  title: string;
-  description: string;
-  owner: "Jack" | "Charlie" | "Lily" | "M & D" | "Other";
-  approved: boolean;
-}
-
-const convertToCalendarEvents = (events: ApiCalendarEvent[]) => {
-  if (events.length > 0) {
-    return events.map((event) => {
-      return {
-        start: event.start_date,
-        end: event.end_date,
-        owner: event.owner,
-        title: event.title,
-        description: event.description,
-        approved: event.approved,
-      };
-    });
-  }
-};
+import { Bookings } from "@prisma/client";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 export default function Home() {
-  const [events, setEvents] = useState<CalendarEvent[] | undefined>();
-  const [token, setToken] = useState<string | null>();
-  useEffect(() => {
-    if (window !== undefined) {
-      setToken(localStorage.getItem("token"));
-    }
-  }, []);
+  useAuthentication();
 
-  const view = token ? "calendar" : "calendar";
-  const [width] = useWindowSize();
-  // useEffect(() => {
-  //   getBookings().then((res: ApiCalendarEvent[]) => {
-  //     const eventData = convertToCalendarEvents(res);
-  //     setEvents(eventData);
-  //   });
-  // }, []);
+  const [events, setEvents] = useState<Bookings[] | undefined>([]);
+  useEffect(() => {
+    getBookings().then((res) => setEvents(res));
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -77,17 +26,15 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles.container}>
-          <NavBar view={view} width={width} />
-          {token ? (
-            <div className={styles.card}>
-              <div className={styles.calendar}>
-                <NewCalendar events={events} />
-              </div>
-              <UpcomingEvents events={events} />
+          <NavBar />
+          <a href="/api/auth/login">Login</a>
+          <a href="/api/auth/logout">Logout</a>
+          <div className={styles.card}>
+            <div className={styles.calendar}>
+              <NewCalendar events={events} />
             </div>
-          ) : (
-            <Login message="" />
-          )}
+            <UpcomingEvents events={events} />
+          </div>
         </div>
       </main>
     </div>

@@ -101,15 +101,16 @@ const InnerForm = (props: OtherProps) => {
         label="Email"
         type="email"
         value={formik.values.email}
-        onChange={formik.handleChange}
+        onChange={(val) => formik.handleChange(val)}
       />
       <Input
         id="password"
         label="Password"
         type="password"
         value={formik.values.password}
-        onChange={formik.handleChange}
+        onChange={(val) => formik.handleChange(val)}
       />
+      <input />
       <button style={styles.button} type="submit">
         Submit
       </button>

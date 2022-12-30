@@ -1,6 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { ViewProps } from "../pages/index";
 
 const styles = {
   buttonColor: {
@@ -20,6 +18,7 @@ const styles = {
   navText: {
     color: "#FFFFFF",
     fontFamily: "Gill Sans",
+    fontSize: "104px",
     cursor: "pointer",
   },
   signInButton: {
@@ -45,12 +44,7 @@ const styles = {
   },
 };
 
-export const NavBar = ({ width }: ViewProps) => {
-  const navTextSize =
-    width > 850
-      ? { fontSize: 100, letterSpacing: 45 }
-      : { fontSize: 50, letterSpacing: 20 };
-
+export const NavBar = () => {
   return (
     <div
       style={{
@@ -59,7 +53,7 @@ export const NavBar = ({ width }: ViewProps) => {
         justifyContent: "center",
       }}
     >
-      <span style={{ ...styles.navText, ...navTextSize }}>THE HUT</span>
+      <span style={{ ...styles.navText }}>THE HUT</span>
     </div>
   );
 };
