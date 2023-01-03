@@ -41,15 +41,16 @@
   background-color: white;
   border-radius: 20px;
   margin: auto;
-  min-width: 80vw;
+  min-width: 98vw;
   max-height: 750px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  align-self: center;
   @include mixins.breakpoint(variables.$sm) {
     flex-direction: row;
     min-width: 85vw;
     max-height: 60vh;
-    min-width: 100vw;
+    min-width: 85vw;
   }
 
   .calendar {

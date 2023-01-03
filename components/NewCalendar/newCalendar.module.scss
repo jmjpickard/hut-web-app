@@ -89,6 +89,13 @@
   }
 }
 
+.booked {
+  &:hover {
+    background-color: white;
+    color: #85acae;
+  }
+}
+
 .dayContent {
   display: flex;
   flex-direction: column;
@@ -101,7 +108,24 @@
 
 .bookedDay {
   height: 25%;
-  background-color: blue;
   padding: 0;
   margin-left: -1px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.jack {
+  background-color: #34a0d1;
+}
+
+.charlie {
+  background-color: #3cbe61;
+}
+
+.lily {
+  background-color: #f862e8;
+}
+
+.mumAndDad {
+  background-color: #f86262;
 }

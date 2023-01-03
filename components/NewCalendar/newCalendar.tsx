@@ -1,6 +1,7 @@
+import { Bookings } from "@prisma/client";
 import moment from "moment";
-import { useState } from "react";
-import { CalendarEvent } from "../../App";
+import { Dispatch, SetStateAction, useState } from "react";
+import { upcoming } from "../../pages";
 import { Day } from "./day";
 import styles from "./newCalendar.module.scss";
 
@@ -15,20 +16,31 @@ export interface daysProps {
 }
 
 interface Props {
-  events?: CalendarEvent[];
+  events?: Bookings[];
+  setUpcomingState: Dispatch<SetStateAction<upcoming>>;
+  setSelectedEvent: Dispatch<SetStateAction<Bookings | undefined>>;
 }
 
-const buildDays = (dayDiff: number, firstMondayWeekOfMonth: moment.Moment) => {
+const buildDays = (
+  dayDiff: number,
+  firstMondayWeekOfMonth: moment.Moment,
+  events: Bookings[] | undefined
+) => {
   let days: daysProps[] = [];
   for (let x = 0; x <= dayDiff; x++) {
     const currentDate = moment(firstMondayWeekOfMonth).add(x, "days");
+    const isBooked = events?.find(
+      (e) =>
+        currentDate <= moment(new Date(e.end_date)) &&
+        currentDate >= moment(new Date(e.start_date))
+    );
     days = [
       ...days,
       {
         day: currentDate.format("DD"),
         date: currentDate.format("YYYY-MM-DD hh:mm"),
-        booked: false,
-        bookedBy: "",
+        booked: isBooked ? true : false,
+        bookedBy: isBooked?.owner ?? "",
         selected: false,
       },
     ];
@@ -36,7 +48,11 @@ const buildDays = (dayDiff: number, firstMondayWeekOfMonth: moment.Moment) => {
   return days;
 };
 
-export const NewCalendar: React.FC<Props> = ({ events }) => {
+export const NewCalendar: React.FC<Props> = ({
+  events,
+  setUpcomingState,
+  setSelectedEvent,
+}) => {
   const today = moment();
   const [date, setDate] = useState(today);
 
@@ -54,7 +70,7 @@ export const NewCalendar: React.FC<Props> = ({ events }) => {
     lastSundayWeekOfMonth.diff(firstMondayWeekOfMonth, "days") + 1
   );
   const [days, setDays] = useState<daysProps[]>(
-    buildDays(dayDiff, firstMondayWeekOfMonth)
+    buildDays(dayDiff, firstMondayWeekOfMonth, events)
   );
 
   const [onStart, setOnStart] = useState(true);
@@ -75,10 +91,21 @@ export const NewCalendar: React.FC<Props> = ({ events }) => {
     setLastDayOfMonth(lastDay);
     setLastSundayWeekOfMonth(lastSunday);
     setDayDiff(diff);
-    setDays(buildDays(diff, firstMonday));
+    setDays(buildDays(diff, firstMonday, events));
   };
 
   const handleDayClick = (day: daysProps) => {
+    const selectedDate = moment(new Date(day.date));
+    if (day.booked) {
+      setSelectedEvent(
+        events?.find(
+          (e) =>
+            selectedDate <= moment(new Date(e.end_date)) &&
+            selectedDate >= moment(new Date(e.start_date))
+        )
+      );
+      setUpcomingState("selected");
+    }
     if (onStart) {
       setDays(
         days.map((d) => {

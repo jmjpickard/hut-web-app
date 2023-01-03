@@ -1,15 +1,15 @@
 import styles from "./upcomingEvents.module.scss";
-import { CalendarEvent } from "../../App";
+import { Bookings } from "@prisma/client";
 
 interface Props {
-  events?: CalendarEvent[];
+  events?: Bookings[];
 }
 
 interface EventProps {
-  title: string;
+  title?: string;
 }
 
-const Event: React.FC<EventProps> = ({ title }) => {
+export const Event: React.FC<EventProps> = ({ title }) => {
   return (
     <div className={styles.event}>
       <div>{title}</div>

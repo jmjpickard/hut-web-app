@@ -6,12 +6,14 @@ import styles from "../components/styles.module.scss";
 import { NewCalendar } from "../components/NewCalendar/newCalendar";
 import { UpcomingEvents } from "../components/UpcomingEvents/UpcomingEvents";
 import { Bookings } from "@prisma/client";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { SelectedEvent } from "../components/SelectedEvent/SelectedEvent";
+
+export type upcoming = "all" | "selected" | "newEvent";
 
 export default function Home() {
-  useAuthentication();
-
   const [events, setEvents] = useState<Bookings[] | undefined>([]);
+  const [upcomingState, setUpcomingState] = useState<upcoming>("all");
+  const [selectedEvent, setSelectedEvent] = useState<Bookings | undefined>();
   useEffect(() => {
     getBookings().then((res) => setEvents(res));
   }, []);
@@ -27,13 +29,24 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.container}>
           <NavBar />
-          <a href="/api/auth/login">Login</a>
-          <a href="/api/auth/logout">Logout</a>
           <div className={styles.card}>
             <div className={styles.calendar}>
-              <NewCalendar events={events} />
+              <NewCalendar
+                events={events}
+                setUpcomingState={setUpcomingState}
+                setSelectedEvent={setSelectedEvent}
+              />
             </div>
-            <UpcomingEvents events={events} />
+            {(() => {
+              switch (upcomingState) {
+                case "all":
+                  return <UpcomingEvents events={events} />;
+                case "selected":
+                  return <SelectedEvent booking={selectedEvent} />;
+                case "newEvent":
+                  return <UpcomingEvents events={events} />;
+              }
+            })()}
           </div>
         </div>
       </main>
