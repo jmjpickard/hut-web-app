@@ -40,11 +40,15 @@ export default function Home() {
             {(() => {
               switch (upcomingState) {
                 case "all":
-                  return <UpcomingEvents events={events} />;
+                  return (
+                    <UpcomingEvents events={events} setEvents={setEvents} />
+                  );
                 case "selected":
                   return <SelectedEvent booking={selectedEvent} />;
                 case "newEvent":
-                  return <UpcomingEvents events={events} />;
+                  return (
+                    <UpcomingEvents events={events} setEvents={setEvents} />
+                  );
               }
             })()}
           </div>

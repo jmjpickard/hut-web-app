@@ -10,9 +10,16 @@ interface Props {
 export const SelectedEvent: React.FC<Props> = ({ booking }: Props) => {
   return (
     <div className={styles.container}>
-      <div className={styles.title}>Selected</div>
+      <div className={styles.title}>Selected booking</div>
       <div className={styles.bookingsContent}>
-        <Event title={booking?.title} />
+        <Event
+          id={booking?.id}
+          description={booking?.description}
+          name={booking?.owner}
+          start={booking?.start_date}
+          end={booking?.end_date}
+          approved={booking?.approved}
+        />
       </div>
     </div>
   );

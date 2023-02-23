@@ -8,7 +8,7 @@ interface DayArgs {
   onClick: (day: daysProps) => void;
 }
 
-const personColour = {
+export const personColour = {
   Jack: "jack",
   Charlie: "charlie",
   Lily: "lily",
@@ -24,7 +24,7 @@ export const Day: React.FC<DayArgs> = ({ day, topRow, onClick }: DayArgs) => {
         [styles.selected]: day.selected,
         [styles.booked]: day.booked,
       })}
-      onClick={() => !day.booked && onClick(day)}
+      onClick={() => onClick(day)}
     >
       <div className={styles.dayNumber}>{day.day}</div>
       {day.booked && (

@@ -60,3 +60,12 @@
     }
   }
 }
+
+.title {
+  color: #ffffff;
+  font-family: "Gill Sans";
+  font-size: 50px;
+  @include mixins.breakpoint(variables.$sm) {
+    font-size: 104px;
+  }
+}

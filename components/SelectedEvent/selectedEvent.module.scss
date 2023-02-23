@@ -7,7 +7,6 @@
   gap: 20px;
   margin-top: 6px;
   width: 100%;
-  overflow: scroll;
   @include mixins.breakpoint(variables.$sm) {
     width: 40%;
   }
@@ -25,6 +24,5 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    overflow: scroll;
   }
 }

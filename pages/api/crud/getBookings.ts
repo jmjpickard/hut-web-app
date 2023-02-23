@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { Bookings } from "@prisma/client";
 import type { NextApiResponse } from "next";
-import prisma from "../prisma";
+import { prisma } from "../prisma";
 
 export default async function handler(
   _: any,

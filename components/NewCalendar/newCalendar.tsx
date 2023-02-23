@@ -105,8 +105,10 @@ export const NewCalendar: React.FC<Props> = ({
         )
       );
       setUpcomingState("selected");
+    } else {
+      setUpcomingState("newEvent");
     }
-    if (onStart) {
+    if (onStart && !day.booked) {
       setDays(
         days.map((d) => {
           if (d.date === day.date) {
@@ -115,7 +117,7 @@ export const NewCalendar: React.FC<Props> = ({
           return { ...d, selected: false };
         })
       );
-    } else {
+    } else if (!day.booked) {
       const startDate = days.find((d) => d.selected);
       setDays(
         days.map((d) => {
