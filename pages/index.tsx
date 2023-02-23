@@ -44,7 +44,12 @@ export default function Home() {
                     <UpcomingEvents events={events} setEvents={setEvents} />
                   );
                 case "selected":
-                  return <SelectedEvent booking={selectedEvent} />;
+                  return (
+                    <SelectedEvent
+                      booking={selectedEvent}
+                      setEvents={setEvents}
+                    />
+                  );
                 case "newEvent":
                   return (
                     <UpcomingEvents events={events} setEvents={setEvents} />

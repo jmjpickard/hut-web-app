@@ -1,13 +1,17 @@
 import { Bookings } from "@prisma/client";
-import React from "react";
+import React, { SetStateAction } from "react";
 import { Event } from "../UpcomingEvents/UpcomingEvents";
 import styles from "./selectedEvent.module.scss";
 
 interface Props {
   booking: Bookings | undefined;
+  setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
 }
 
-export const SelectedEvent: React.FC<Props> = ({ booking }: Props) => {
+export const SelectedEvent: React.FC<Props> = ({
+  booking,
+  setEvents,
+}: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>Selected booking</div>
@@ -19,6 +23,7 @@ export const SelectedEvent: React.FC<Props> = ({ booking }: Props) => {
           start={booking?.start_date}
           end={booking?.end_date}
           approved={booking?.approved}
+          setEvents={setEvents}
         />
       </div>
     </div>
