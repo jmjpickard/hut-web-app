@@ -168,7 +168,11 @@ export const NewCalendar: React.FC<Props> = ({
       </div>
       <div className={styles.dayContainer}>
         {days.map((day, idx) => {
-          return <Day day={day} topRow={idx < 7} onClick={handleDayClick} />;
+          return (
+            <div key={idx}>
+              <Day day={day} topRow={idx < 7} onClick={handleDayClick} />
+            </div>
+          );
         })}
       </div>
     </div>
