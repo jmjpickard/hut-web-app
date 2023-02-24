@@ -1,6 +1,6 @@
 import { Bookings } from "@prisma/client";
 import moment from "moment";
-import { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { upcoming } from "../../pages";
 import { Day } from "./day";
 import styles from "./newCalendar.module.scss";
@@ -169,9 +169,9 @@ export const NewCalendar: React.FC<Props> = ({
       <div className={styles.dayContainer}>
         {days.map((day, idx) => {
           return (
-            <div key={idx}>
+            <React.Fragment key={idx}>
               <Day day={day} topRow={idx < 7} onClick={handleDayClick} />
-            </div>
+            </React.Fragment>
           );
         })}
       </div>
