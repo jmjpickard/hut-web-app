@@ -53,8 +53,8 @@ export const Event: React.FC<EventProps> = ({
             <div className={styles.buttons}>
               <button
                 className={clx(styles.button, {
-                  [styles.approve]: !approved,
-                  [styles.revoke]: approved,
+                  [styles.approve as string]: !approved,
+                  [styles.revoke as string]: approved,
                 })}
                 onClick={() => {
                   if (id) {
