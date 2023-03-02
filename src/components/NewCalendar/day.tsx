@@ -20,9 +20,9 @@ export const Day: React.FC<DayArgs> = ({ day, topRow, onClick }: DayArgs) => {
     <div
       key={day.date}
       className={clx(styles.day, {
-        [styles.topRow]: topRow,
-        [styles.selected]: day.selected,
-        [styles.booked]: day.booked,
+        [styles.topRow as string]: topRow,
+        [styles.selected as string]: day.selected,
+        [styles.booked as string]: day.booked,
       })}
       onClick={() => onClick(day)}
     >
