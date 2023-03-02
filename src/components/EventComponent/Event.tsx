@@ -1,16 +1,12 @@
-import styles from "./upcomingEvents.module.scss";
+import { SetStateAction } from "react";
 import { Bookings } from "@prisma/client";
 import moment from "moment";
-import clx from "classnames";
-import { personColour } from "../NewCalendar/day";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { approveBooking, getBookings } from "../../http/bookings";
-import { SetStateAction } from "react";
+import { personColour } from "../NewCalendar/day";
+import { approveBooking, getBookings } from "../../../http/bookings";
 
-interface Props {
-  events?: Bookings[];
-  setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
-}
+import styles from "./event.module.scss";
+import clx from "classnames";
 
 interface EventProps {
   id?: number;
@@ -62,6 +58,7 @@ export const Event: React.FC<EventProps> = ({
                 })}
                 onClick={() => {
                   if (id) {
+                    console.log("hello");
                     approveBooking({
                       id,
                       approve: !approved,
@@ -81,33 +78,6 @@ export const Event: React.FC<EventProps> = ({
             </div>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-export const UpcomingEvents: React.FC<Props> = ({ events, setEvents }) => {
-  return (
-    <div className={styles.container}>
-      <div className={styles.title}>Upcoming bookings</div>
-      <div className={styles.bookingsContent}>
-        {events ? (
-          events.map((event) => (
-            <div key={event.id}>
-              <Event
-                id={event.id}
-                description={event.description}
-                name={event.owner}
-                start={event.start_date}
-                end={event.end_date}
-                approved={event.approved}
-                setEvents={setEvents}
-              />
-            </div>
-          ))
-        ) : (
-          <div className={styles.nonEvent}>Nothing booked at the moment</div>
-        )}
       </div>
     </div>
   );

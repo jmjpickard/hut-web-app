@@ -1,6 +1,6 @@
 import { Bookings } from "@prisma/client";
 import moment from "moment";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { upcoming } from "../../pages";
 import { Day } from "./day";
 import styles from "./newCalendar.module.scss";
@@ -72,6 +72,10 @@ export const NewCalendar: React.FC<Props> = ({
   const [days, setDays] = useState<daysProps[]>(
     buildDays(dayDiff, firstMondayWeekOfMonth, events)
   );
+
+  useEffect(() => {
+    setDays(buildDays(dayDiff, firstMondayWeekOfMonth, events));
+  }, [dayDiff, firstMondayWeekOfMonth, events]);
 
   const [onStart, setOnStart] = useState(true);
 

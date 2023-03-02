@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { Bookings } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { approveProps } from "../../../http/bookings";
+import { approveProps } from "../../../../http/bookings";
 import { prisma } from "../prisma";
 
 export interface approveBookingReq extends NextApiRequest {

@@ -1,4 +1,4 @@
-import { approveBookingReq } from "../pages/api/crud/approveBooking";
+import { approveBookingReq } from "../src/pages/api/crud/approveBooking";
 
 export const test = () => {
   return fetch("/api/hello").then((res) => {

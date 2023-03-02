@@ -1,6 +1,6 @@
 import { Bookings } from "@prisma/client";
 import React, { SetStateAction } from "react";
-import { Event } from "../UpcomingEvents/UpcomingEvents";
+import { Event } from "../EventComponent/Event";
 import styles from "./selectedEvent.module.scss";
 
 interface Props {

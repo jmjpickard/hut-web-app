@@ -1,12 +1,13 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { NavBar } from "../components/NavBar";
-import { getBookings } from "../http/bookings";
+import { getBookings } from "../../http/bookings";
 import styles from "../components/styles.module.scss";
 import { NewCalendar } from "../components/NewCalendar/newCalendar";
 import { UpcomingEvents } from "../components/UpcomingEvents/UpcomingEvents";
 import { Bookings } from "@prisma/client";
-import { SelectedEvent } from "../components/SelectedEvent/SelectedEvent";
+import { NewBooking } from "../components/NewBooking/NewBooking";
+import { trpc } from "../utils/trpc";
 
 export type upcoming = "all" | "selected" | "newEvent";
 
@@ -15,18 +16,26 @@ export default function Home() {
   const [upcomingState, setUpcomingState] = useState<upcoming>("all");
   const [selectedEvent, setSelectedEvent] = useState<Bookings | undefined>();
   useEffect(() => {
-    getBookings().then((res) => setEvents(res));
+    getBookings().then((res) => {
+      setEvents(res);
+      const newSelectedEvent = events?.find((event) => event.id === res.id);
+      setSelectedEvent(newSelectedEvent);
+    });
   }, []);
+
+  useEffect(() => {
+    if (upcomingState !== "selected") {
+      setSelectedEvent(undefined);
+    }
+  }, [upcomingState]);
+
+  const hello = trpc.hello.useQuery({ msg: "client" });
+  const bookings = trpc.getBookings.useQuery();
+  console.log({ hello, bookings }, bookings.data);
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>The Hut</title>
-        <meta name="description" content="The Hut booking site" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
+      <div className={styles.main}>
         <div className={styles.container}>
           <NavBar />
           <div className={styles.card}>
@@ -41,24 +50,27 @@ export default function Home() {
               switch (upcomingState) {
                 case "all":
                   return (
-                    <UpcomingEvents events={events} setEvents={setEvents} />
+                    <UpcomingEvents
+                      events={events}
+                      setEvents={setEvents}
+                      selectedEvent={selectedEvent}
+                    />
                   );
                 case "selected":
                   return (
-                    <SelectedEvent
-                      booking={selectedEvent}
+                    <UpcomingEvents
+                      events={events}
                       setEvents={setEvents}
+                      selectedEvent={selectedEvent}
                     />
                   );
                 case "newEvent":
-                  return (
-                    <UpcomingEvents events={events} setEvents={setEvents} />
-                  );
+                  return <NewBooking />;
               }
             })()}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
