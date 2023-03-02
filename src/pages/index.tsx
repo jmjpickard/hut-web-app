@@ -21,7 +21,7 @@ export default function Home() {
       const newSelectedEvent = events?.find((event) => event.id === res.id);
       setSelectedEvent(newSelectedEvent);
     });
-  }, []);
+  }, [events]);
 
   useEffect(() => {
     if (upcomingState !== "selected") {
