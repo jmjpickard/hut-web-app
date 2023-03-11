@@ -14,7 +14,8 @@ export const appRouter = router({
         text: `hello ${input.msg}`,
       };
     }),
-  getBookings: procedure.query(async () => {
+  getBookings: procedure.query(async ({ ctx }) => {
+    console.log({ ctx });
     const bookings = await prisma.bookings.findMany({});
     console.log("getBookings", bookings.length);
     return bookings;

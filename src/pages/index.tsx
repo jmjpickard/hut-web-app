@@ -1,27 +1,19 @@
-import Head from "next/head";
 import { useState, useEffect } from "react";
 import { NavBar } from "../components/NavBar";
-import { getBookings } from "../../http/bookings";
 import styles from "../components/styles.module.scss";
 import { NewCalendar } from "../components/NewCalendar/newCalendar";
 import { UpcomingEvents } from "../components/UpcomingEvents/UpcomingEvents";
 import { Bookings } from "@prisma/client";
 import { NewBooking } from "../components/NewBooking/NewBooking";
 import { trpc } from "../utils/trpc";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 export type upcoming = "all" | "selected" | "newEvent";
 
-export default function Home() {
+const Home: React.FC = () => {
   const [events, setEvents] = useState<Bookings[] | undefined>([]);
   const [upcomingState, setUpcomingState] = useState<upcoming>("all");
   const [selectedEvent, setSelectedEvent] = useState<Bookings | undefined>();
-  useEffect(() => {
-    getBookings().then((res) => {
-      setEvents(res);
-      const newSelectedEvent = events?.find((event) => event.id === res.id);
-      setSelectedEvent(newSelectedEvent);
-    });
-  }, [events]);
 
   useEffect(() => {
     if (upcomingState !== "selected") {
@@ -29,9 +21,25 @@ export default function Home() {
     }
   }, [upcomingState]);
 
-  const hello = trpc.hello.useQuery({ msg: "client" });
-  const bookings = trpc.getBookings.useQuery();
-  console.log({ hello, bookings }, bookings.data);
+  const { isLoading, error } = trpc.getBookings.useQuery(undefined, {
+    onSuccess: (data) => {
+      const bookings: Bookings[] = data.map((i) => ({
+        id: i.id,
+        owner: i.owner,
+        title: i.title,
+        description: i.description,
+        start_date: new Date(i.start_date),
+        end_date: new Date(i.end_date),
+        approved: i.approved,
+      }));
+
+      setEvents(bookings);
+    },
+  });
+
+  if (error) {
+    return <div>"An error has occurred: "{error.message}</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -73,4 +81,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default withPageAuthRequired(Home);

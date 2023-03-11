@@ -3,7 +3,6 @@ import { Bookings } from "@prisma/client";
 import moment from "moment";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { personColour } from "../NewCalendar/day";
-import { approveBooking, getBookings } from "../../../http/bookings";
 
 import styles from "./event.module.scss";
 import clx from "classnames";
@@ -31,7 +30,8 @@ export const Event: React.FC<EventProps> = ({
     .add(1, "day")
     .format("DD MMM");
   const endDate = moment(new Date(end ?? "")).format("DD MMM YYYY");
-  const { user } = useUser();
+  const { user, isLoading, error } = useUser();
+  console.log({ user, error, isLoading });
   return (
     <div
       className={clx(
@@ -59,10 +59,6 @@ export const Event: React.FC<EventProps> = ({
                 onClick={() => {
                   if (id) {
                     console.log("hello");
-                    approveBooking({
-                      id,
-                      approve: !approved,
-                    }).then(() => getBookings().then((res) => setEvents(res)));
                   }
                 }}
               >
