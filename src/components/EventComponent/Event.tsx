@@ -6,6 +6,8 @@ import { personColour } from "../NewCalendar/day";
 
 import styles from "./event.module.scss";
 import clx from "classnames";
+import { trpc } from "~/utils/trpc";
+import { buildBookings } from "~/pages";
 
 interface EventProps {
   id?: number;
@@ -30,8 +32,16 @@ export const Event: React.FC<EventProps> = ({
     .add(1, "day")
     .format("DD MMM");
   const endDate = moment(new Date(end ?? "")).format("DD MMM YYYY");
-  const { user, isLoading, error } = useUser();
-  console.log({ user, error, isLoading });
+  const { user } = useUser();
+
+  const approveBooking = trpc.approveBooking.useMutation({
+    onSuccess: (data) => {
+      const bookIdx = data.allBookings.findIndex((b) => b.id === id);
+      data.allBookings[bookIdx] = data.booking;
+      setEvents(buildBookings(data.allBookings));
+    },
+  });
+
   return (
     <div
       className={clx(
@@ -59,6 +69,11 @@ export const Event: React.FC<EventProps> = ({
                 onClick={() => {
                   if (id) {
                     console.log("hello");
+                    approveBooking.mutate({
+                      user: user?.name,
+                      bookingId: id,
+                      approved: approved ?? false,
+                    });
                   }
                 }}
               >

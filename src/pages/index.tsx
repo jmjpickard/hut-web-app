@@ -10,6 +10,18 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 
 export type upcoming = "all" | "selected" | "newEvent";
 
+export const buildBookings = (data: any[]): Bookings[] => {
+  return data.map((i: any) => ({
+    id: i.id,
+    owner: i.owner,
+    title: i.title,
+    description: i.description,
+    start_date: new Date(i.start_date),
+    end_date: new Date(i.end_date),
+    approved: i.approved,
+  }));
+};
+
 const Home: React.FC = () => {
   const [events, setEvents] = useState<Bookings[] | undefined>([]);
   const [upcomingState, setUpcomingState] = useState<upcoming>("all");
@@ -21,20 +33,8 @@ const Home: React.FC = () => {
     }
   }, [upcomingState]);
 
-  const { isLoading, error } = trpc.getBookings.useQuery(undefined, {
-    onSuccess: (data) => {
-      const bookings: Bookings[] = data.map((i) => ({
-        id: i.id,
-        owner: i.owner,
-        title: i.title,
-        description: i.description,
-        start_date: new Date(i.start_date),
-        end_date: new Date(i.end_date),
-        approved: i.approved,
-      }));
-
-      setEvents(bookings);
-    },
+  const { error } = trpc.getBookings.useQuery(undefined, {
+    onSuccess: (data) => setEvents(buildBookings(data)),
   });
 
   if (error) {

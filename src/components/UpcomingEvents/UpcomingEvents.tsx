@@ -17,7 +17,6 @@ export const UpcomingEvents: React.FC<Props> = ({
   const displayEvents = selectedEvent
     ? events?.filter((e) => e.id === selectedEvent.id)
     : events;
-  console.log({ displayEvents, selectedEvent });
   return (
     <div className={styles.container}>
       <div className={styles.title}>Upcoming bookings</div>
