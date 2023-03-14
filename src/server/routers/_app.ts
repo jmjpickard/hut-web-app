@@ -52,6 +52,36 @@ export const appRouter = router({
         return { booking, allBookings };
       }
     }),
+  createBooking: procedure
+    .input(
+      z.object({
+        owner: z.string(),
+        title: z.string(),
+        description: z.string(),
+        start_date: z.string(),
+        end_date: z.string(),
+        approved: z.boolean(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.$transaction(async (tx) => {
+        const booking = await tx.bookings.create({
+          data: {
+            owner: input.owner,
+            title: input.title,
+            description: input.description,
+            start_date: input.start_date,
+            end_date: input.end_date,
+            approved: input.approved,
+          },
+        });
+        console.log("hello", { booking });
+        if (booking) {
+          const allBookings = await tx.bookings.findMany({});
+          return allBookings;
+        }
+      });
+    }),
 });
 
 // export type definition of API

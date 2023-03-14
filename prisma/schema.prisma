@@ -2,13 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 model Bookings {
-  id    Int      @id @default(autoincrement())
-  owner String
-  title String
+  id          Int     @id @default(autoincrement())
+  owner       String
+  title       String
   description String
-  start_date DateTime
-  end_date DateTime
-  approved Boolean
+  start_date  String
+  end_date    String
+  approved    Boolean
 }
 
 generator client {

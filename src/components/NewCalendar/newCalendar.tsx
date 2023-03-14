@@ -19,6 +19,8 @@ interface Props {
   events?: Bookings[];
   setUpcomingState: Dispatch<SetStateAction<upcoming>>;
   setSelectedEvent: Dispatch<SetStateAction<Bookings | undefined>>;
+  onStartDateChange?: (date: string) => void;
+  onEndDateChange?: (date: string) => void;
 }
 
 const buildDays = (
@@ -52,6 +54,8 @@ export const NewCalendar: React.FC<Props> = ({
   events,
   setUpcomingState,
   setSelectedEvent,
+  onStartDateChange,
+  onEndDateChange,
 }) => {
   const today = moment();
   const [date, setDate] = useState(today);
@@ -113,6 +117,7 @@ export const NewCalendar: React.FC<Props> = ({
       setUpcomingState("newEvent");
     }
     if (onStart && !day.booked) {
+      onStartDateChange?.(day.date);
       setDays(
         days.map((d) => {
           if (d.date === day.date) {
@@ -122,6 +127,7 @@ export const NewCalendar: React.FC<Props> = ({
         })
       );
     } else if (!day.booked) {
+      onEndDateChange?.(day.date);
       const startDate = days.find((d) => d.selected);
       setDays(
         days.map((d) => {

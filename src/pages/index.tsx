@@ -16,8 +16,8 @@ export const buildBookings = (data: any[]): Bookings[] => {
     owner: i.owner,
     title: i.title,
     description: i.description,
-    start_date: new Date(i.start_date),
-    end_date: new Date(i.end_date),
+    start_date: i.start_date,
+    end_date: i.end_date,
     approved: i.approved,
   }));
 };
@@ -26,6 +26,13 @@ const Home: React.FC = () => {
   const [events, setEvents] = useState<Bookings[] | undefined>([]);
   const [upcomingState, setUpcomingState] = useState<upcoming>("all");
   const [selectedEvent, setSelectedEvent] = useState<Bookings | undefined>();
+  const [startDate, setStartDate] = useState<string | undefined>();
+  const [endDate, setEndDate] = useState<string | undefined>();
+
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date);
+    setEndDate(undefined);
+  };
 
   useEffect(() => {
     if (upcomingState !== "selected") {
@@ -52,6 +59,8 @@ const Home: React.FC = () => {
                 events={events}
                 setUpcomingState={setUpcomingState}
                 setSelectedEvent={setSelectedEvent}
+                onStartDateChange={handleStartDateChange}
+                onEndDateChange={setEndDate}
               />
             </div>
             {(() => {
@@ -73,7 +82,13 @@ const Home: React.FC = () => {
                     />
                   );
                 case "newEvent":
-                  return <NewBooking />;
+                  return (
+                    <NewBooking
+                      startDate={startDate}
+                      endDate={endDate}
+                      setEvents={setEvents}
+                    />
+                  );
               }
             })()}
           </div>
