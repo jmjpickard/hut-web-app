@@ -13,8 +13,8 @@ interface EventProps {
   id?: number;
   name?: string;
   description?: string;
-  start?: Date;
-  end?: Date;
+  start?: string;
+  end?: string;
   approved?: boolean;
   setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
 }
