@@ -84,7 +84,7 @@ export const appRouter = router({
   deleteBooking: procedure
     .input(
       z.object({
-        bookingId: z.number(),
+        bookingId: z.number().optional(),
       })
     )
     .mutation(async ({ input }) => {

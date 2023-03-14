@@ -33,12 +33,21 @@ export const Event: React.FC<EventProps> = ({
     .format("DD MMM");
   const endDate = moment(new Date(end ?? "")).format("DD MMM YYYY");
   const { user } = useUser();
+  const utils = trpc.useContext();
 
   const approveBooking = trpc.approveBooking.useMutation({
     onSuccess: (data) => {
       const bookIdx = data.allBookings.findIndex((b) => b.id === id);
       data.allBookings[bookIdx] = data.booking;
       setEvents(buildBookings(data.allBookings));
+    },
+  });
+
+  const cancelBooking = trpc.deleteBooking.useMutation({
+    onSuccess: (data) => {
+      if (data) {
+        utils.getBookings.invalidate();
+      }
     },
   });
 
@@ -83,7 +92,10 @@ export const Event: React.FC<EventProps> = ({
           )}
           {user?.name === name && (
             <div className={styles.buttons}>
-              <button className={clx(styles.button, styles.cancel)}>
+              <button
+                className={clx(styles.button, styles.cancel)}
+                onClick={() => cancelBooking.mutate({ bookingId: id })}
+              >
                 Cancel
               </button>
             </div>
