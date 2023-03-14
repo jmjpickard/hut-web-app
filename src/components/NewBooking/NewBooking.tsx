@@ -7,13 +7,11 @@ import { Input } from "../input/input";
 import { trpc } from "~/utils/trpc";
 import { SetStateAction } from "react";
 import { Bookings } from "@prisma/client";
-import { buildBookings } from "~/pages";
 import React from "react";
 
 interface NewBookingProps {
   startDate?: string;
   endDate?: string;
-  setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
 }
 
 const formatDate = (date: string) => moment(new Date(date)).format("DD MMM");
@@ -21,16 +19,16 @@ const formatDate = (date: string) => moment(new Date(date)).format("DD MMM");
 export const NewBooking: React.FC<NewBookingProps> = ({
   startDate,
   endDate,
-  setEvents,
 }: NewBookingProps) => {
   const { user } = useUser();
+  const utils = trpc.useContext();
   const name = user?.name ?? "jack";
   const [description, setDescription] = React.useState<string>();
 
   const createBooking = trpc.createBooking.useMutation({
     onSuccess: (data) => {
       if (data) {
-        setEvents(buildBookings(data));
+        utils.getBookings.invalidate();
       }
     },
   });

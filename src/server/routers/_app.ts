@@ -75,7 +75,25 @@ export const appRouter = router({
             approved: input.approved,
           },
         });
-        console.log("hello", { booking });
+        if (booking) {
+          const allBookings = await tx.bookings.findMany({});
+          return allBookings;
+        }
+      });
+    }),
+  deleteBooking: procedure
+    .input(
+      z.object({
+        bookingId: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.$transaction(async (tx) => {
+        const booking = await tx.bookings.delete({
+          where: {
+            id: input.bookingId,
+          },
+        });
         if (booking) {
           const allBookings = await tx.bookings.findMany({});
           return allBookings;

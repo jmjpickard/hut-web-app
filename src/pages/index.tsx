@@ -82,13 +82,7 @@ const Home: React.FC = () => {
                     />
                   );
                 case "newEvent":
-                  return (
-                    <NewBooking
-                      startDate={startDate}
-                      endDate={endDate}
-                      setEvents={setEvents}
-                    />
-                  );
+                  return <NewBooking startDate={startDate} endDate={endDate} />;
               }
             })()}
           </div>
