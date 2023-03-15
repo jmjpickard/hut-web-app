@@ -1,3 +1,6 @@
+@use "/styles/variables";
+@use "/styles/mixins" as mixins;
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -55,10 +58,14 @@
 .day {
   flex: 0 0 14%;
   text-align: left;
-  height: 70px;
+  height: 50px;
   color: #6aaeb2;
   border-right: thin solid #e5e8eb;
   border-bottom: thin solid #e5e8eb;
+
+  @include mixins.breakpoint(variables.$sm) {
+    height: 70px;
+  }
 
   &:hover {
     background-color: #d9dbda;
@@ -69,11 +76,14 @@
 .topRow {
   flex: 0 0 14%;
   text-align: left;
-  height: 70px;
+  height: 50px;
   color: #6aaeb2;
   border-right: thin solid #e5e8eb;
   border-bottom: thin solid #e5e8eb;
   border-top: thin solid #e5e8eb;
+  @include mixins.breakpoint(variables.$sm) {
+    height: 70px;
+  }
   &:hover {
     background-color: #d9dbda;
     color: white;
