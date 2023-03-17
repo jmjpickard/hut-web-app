@@ -69,7 +69,7 @@ export const Event: React.FC<EventProps> = ({
         <div>{description}</div>
         <div className={styles.approved}>
           <div>Approved: {approved ? "Yes" : "No"}</div>
-          {user?.name === "Jack" && (
+          {user?.name === "M&D" && (
             <div className={styles.buttons}>
               {approveBooking.isLoading ? (
                 <ClipLoader
