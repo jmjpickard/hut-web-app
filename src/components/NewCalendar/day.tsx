@@ -10,6 +10,7 @@ interface DayArgs {
 
 export const personColour = {
   Jack: "jack",
+  Isobel: "jack",
   Charlie: "charlie",
   Lily: "lily",
   "M&D": "mumAndDad",

@@ -8,6 +8,7 @@ import styles from "./event.module.scss";
 import clx from "classnames";
 import { trpc } from "~/utils/trpc";
 import { buildBookings } from "~/pages";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface EventProps {
   id?: number;
@@ -92,12 +93,22 @@ export const Event: React.FC<EventProps> = ({
           )}
           {user?.name === name && (
             <div className={styles.buttons}>
-              <button
-                className={clx(styles.button, styles.cancel)}
-                onClick={() => cancelBooking.mutate({ bookingId: id })}
-              >
-                Cancel
-              </button>
+              {cancelBooking.isLoading ? (
+                <ClipLoader
+                  color={"#6aaeb2"}
+                  loading={cancelBooking.isLoading}
+                  size={20}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              ) : (
+                <button
+                  className={clx(styles.button, styles.cancel)}
+                  onClick={() => cancelBooking.mutate({ bookingId: id })}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
           )}
         </div>
