@@ -72,6 +72,7 @@ const Home: React.FC = () => {
                       setEvents={setEvents}
                       selectedEvent={selectedEvent}
                       loading={isLoading}
+                      setUpcomingState={setUpcomingState}
                     />
                   );
                 case "selected":
@@ -81,10 +82,18 @@ const Home: React.FC = () => {
                       setEvents={setEvents}
                       selectedEvent={selectedEvent}
                       loading={isLoading}
+                      setUpcomingState={setUpcomingState}
                     />
                   );
                 case "newEvent":
-                  return <NewBooking startDate={startDate} endDate={endDate} />;
+                  return (
+                    <NewBooking
+                      startDate={startDate}
+                      endDate={endDate}
+                      setSelectedEvent={setSelectedEvent}
+                      setUpcomingState={setUpcomingState}
+                    />
+                  );
               }
             })()}
           </div>

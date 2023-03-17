@@ -11,13 +11,25 @@
     width: 40%;
   }
 
-  .title {
+  .titleRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     color: #6aaeb2;
     border-bottom: 1pt solid #6aaeb2;
     width: 100%;
-    font-size: 14pt;
     font-weight: 500;
     padding-bottom: 10px;
+    .title {
+      font-size: 14pt;
+    }
+    .allBookings {
+      cursor: pointer;
+      &:hover {
+        color: #487a7d;
+      }
+    }
   }
 
   .bookingsContent {

@@ -5,13 +5,16 @@ import styles from "../EventComponent/event.module.scss";
 import moment from "moment";
 import { Input } from "../input/input";
 import { trpc } from "~/utils/trpc";
-import { SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
+import { upcoming } from "~/pages";
 import { Bookings } from "@prisma/client";
-import React from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface NewBookingProps {
   startDate?: string;
   endDate?: string;
+  setUpcomingState: Dispatch<SetStateAction<upcoming>>;
+  setSelectedEvent: Dispatch<SetStateAction<Bookings | undefined>>;
 }
 
 const formatDate = (date: string) => moment(new Date(date)).format("DD MMM");
@@ -19,6 +22,8 @@ const formatDate = (date: string) => moment(new Date(date)).format("DD MMM");
 export const NewBooking: React.FC<NewBookingProps> = ({
   startDate,
   endDate,
+  setUpcomingState,
+  setSelectedEvent,
 }: NewBookingProps) => {
   const { user } = useUser();
   const utils = trpc.useContext();
@@ -29,13 +34,24 @@ export const NewBooking: React.FC<NewBookingProps> = ({
     onSuccess: (data) => {
       if (data) {
         utils.getBookings.invalidate();
+        setUpcomingState("selected");
+        setSelectedEvent(data);
       }
     },
   });
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>New booking</div>
+      <div className={styles.titleRow}>
+        <div className={styles.title}>New booking</div>
+        <div
+          className={styles.allBookings}
+          onClick={() => setUpcomingState("all")}
+        >
+          All bookings
+        </div>
+      </div>
+
       <div
         className={clx(
           styles.event,
@@ -55,23 +71,31 @@ export const NewBooking: React.FC<NewBookingProps> = ({
         </div>
       </div>
       <div className={styles.confirmRow}>
-        <button
-          className={styles.newBookingButton}
-          onClick={() => {
-            if (startDate && endDate) {
-              createBooking.mutate({
-                start_date: startDate,
-                end_date: endDate,
-                description: description ?? "",
-                title: "",
-                owner: name,
-                approved: false,
-              });
-            }
-          }}
-        >
-          Confirm booking
-        </button>
+        {createBooking.isLoading ? (
+          <ClipLoader
+            color={"#6aaeb2"}
+            loading={createBooking.isLoading}
+            size={20}
+          />
+        ) : (
+          <button
+            className={styles.newBookingButton}
+            onClick={() => {
+              if (startDate && endDate) {
+                createBooking.mutate({
+                  start_date: startDate,
+                  end_date: endDate,
+                  description: description ?? "",
+                  title: "",
+                  owner: name,
+                  approved: false,
+                });
+              }
+            }}
+          >
+            Confirm booking
+          </button>
+        )}
       </div>
     </div>
   );

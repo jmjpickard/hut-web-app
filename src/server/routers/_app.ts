@@ -75,10 +75,7 @@ export const appRouter = router({
             approved: input.approved,
           },
         });
-        if (booking) {
-          const allBookings = await tx.bookings.findMany({});
-          return allBookings;
-        }
+        return booking;
       });
     }),
   deleteBooking: procedure

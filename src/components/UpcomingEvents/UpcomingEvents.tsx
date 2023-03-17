@@ -1,14 +1,16 @@
 import styles from "./upcomingEvents.module.scss";
 import { Bookings } from "@prisma/client";
-import { SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Event } from "../EventComponent/Event";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { upcoming } from "~/pages";
 
 interface Props {
   events?: Bookings[];
   selectedEvent: Bookings | undefined;
   setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
   loading?: boolean;
+  setUpcomingState: Dispatch<SetStateAction<upcoming>>;
 }
 
 export const UpcomingEvents: React.FC<Props> = ({
@@ -16,13 +18,22 @@ export const UpcomingEvents: React.FC<Props> = ({
   selectedEvent,
   setEvents,
   loading,
+  setUpcomingState,
 }) => {
   const displayEvents = selectedEvent
     ? events?.filter((e) => e.id === selectedEvent.id)
     : events;
   return (
     <div className={styles.container}>
-      <div className={styles.title}>Upcoming bookings</div>
+      <div className={styles.titleRow}>
+        <div className={styles.title}>Upcoming bookings</div>
+        <div
+          className={styles.allBookings}
+          onClick={() => setUpcomingState("all")}
+        >
+          All bookings
+        </div>
+      </div>
       {loading ? (
         <PropagateLoader
           color={"#6aaeb2"}
