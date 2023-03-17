@@ -84,8 +84,12 @@ export const NewBooking: React.FC<NewBookingProps> = ({
             onClick={() => {
               if (startDate && endDate) {
                 createBooking.mutate({
-                  start_date: startDate,
-                  end_date: endDate,
+                  start_date: moment(new Date(startDate))
+                    .format("YYYY-MM-DD")
+                    .toString(),
+                  end_date: moment(new Date(endDate))
+                    .format("YYYY-MM-DD")
+                    .toString(),
                   description: description ?? "",
                   title: "",
                   owner: name,
