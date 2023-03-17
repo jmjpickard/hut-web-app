@@ -23,13 +23,14 @@ export const UpcomingEvents: React.FC<Props> = ({
   return (
     <div className={styles.container}>
       <div className={styles.title}>Upcoming bookings</div>
-      {loading ? (
+      {!loading ? (
         <PropagateLoader
           color={"#6aaeb2"}
-          loading={loading}
+          loading={!loading}
           size={20}
           aria-label="Loading Spinner"
           data-testid="loader"
+          className={styles.loader}
         />
       ) : (
         <div className={styles.bookingsContent}>

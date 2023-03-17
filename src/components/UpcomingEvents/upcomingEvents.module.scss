@@ -37,6 +37,13 @@
   }
 }
 
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 70px;
+}
+
 .nonEvent {
   padding: 25px;
   border-radius: 8px;
