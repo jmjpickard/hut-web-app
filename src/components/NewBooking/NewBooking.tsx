@@ -76,6 +76,7 @@ export const NewBooking: React.FC<NewBookingProps> = ({
             color={"#6aaeb2"}
             loading={createBooking.isLoading}
             size={20}
+            className={styles.loader}
           />
         ) : (
           <button
