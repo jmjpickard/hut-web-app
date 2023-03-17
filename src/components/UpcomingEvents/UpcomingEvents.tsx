@@ -7,6 +7,7 @@ interface Props {
   events?: Bookings[];
   selectedEvent: Bookings | undefined;
   setEvents: (value: SetStateAction<Bookings[] | undefined>) => void;
+  loading?: boolean;
 }
 
 export const UpcomingEvents: React.FC<Props> = ({

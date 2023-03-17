@@ -26,6 +26,11 @@
     gap: 10px;
     height: 200px;
     overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0px;
+      background: transparent; /* make scrollbar transparent */
+    }
+
     @include mixins.breakpoint(variables.$sm) {
       height: 550px;
     }

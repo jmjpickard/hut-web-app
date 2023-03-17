@@ -71,24 +71,33 @@ export const Event: React.FC<EventProps> = ({
           <div>Approved: {approved ? "Yes" : "No"}</div>
           {user?.name === "Jack" && (
             <div className={styles.buttons}>
-              <button
-                className={clx(styles.button, {
-                  [styles.approve as string]: !approved,
-                  [styles.revoke as string]: approved,
-                })}
-                onClick={() => {
-                  if (id) {
-                    console.log("hello");
-                    approveBooking.mutate({
-                      user: user?.name,
-                      bookingId: id,
-                      approved: approved ?? false,
-                    });
-                  }
-                }}
-              >
-                {approved ? "Revoke" : "Approve"}
-              </button>
+              {approveBooking.isLoading ? (
+                <ClipLoader
+                  color={"#6aaeb2"}
+                  loading={cancelBooking.isLoading}
+                  size={20}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              ) : (
+                <button
+                  className={clx(styles.button, {
+                    [styles.approve as string]: !approved,
+                    [styles.revoke as string]: approved,
+                  })}
+                  onClick={() => {
+                    if (id) {
+                      approveBooking.mutate({
+                        user: user?.name,
+                        bookingId: id,
+                        approved: approved ?? false,
+                      });
+                    }
+                  }}
+                >
+                  {approved ? "Revoke" : "Approve"}
+                </button>
+              )}
             </div>
           )}
           {user?.name === name && (
