@@ -40,7 +40,7 @@ const Home: React.FC = () => {
     }
   }, [upcomingState]);
 
-  const { error } = trpc.getBookings.useQuery(undefined, {
+  const { error, isLoading } = trpc.getBookings.useQuery(undefined, {
     onSuccess: (data) => setEvents(buildBookings(data)),
   });
 
@@ -71,6 +71,7 @@ const Home: React.FC = () => {
                       events={events}
                       setEvents={setEvents}
                       selectedEvent={selectedEvent}
+                      loading={isLoading}
                     />
                   );
                 case "selected":
@@ -79,6 +80,7 @@ const Home: React.FC = () => {
                       events={events}
                       setEvents={setEvents}
                       selectedEvent={selectedEvent}
+                      loading={isLoading}
                     />
                   );
                 case "newEvent":
